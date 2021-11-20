@@ -88,17 +88,27 @@ app.get('/products/:product_id/styles', (req, res) => {
       }
     }
 
+    var checkStyleId = [];
     for (var i=0; i<rows.length; i++){
-      var resultsObj={
-        'style_id': rows[i]['style_id'],
-        'name': rows[i]['name'],
-        'original_price': rows[i]['original_price'],
-        'sale_price': rows[i]['sale_price'],
-        'default': rows[i]['default'],
-        'photos': [photoStorage[rows[i]['style_id']]],
-        'skus': skusStorage[rows[i]['style_id']]
+      if(checkStyleId.includes(rows[i]['styleid'])){
+        continue;
+      } else {
+        checkStyleId.push(rows[i]['styleid']);
+        var resultsObj={};
+        resultsObj['style_id']=rows[i]['styleid'];
+        resultsObj['name']=rows[i]['name'];
+        resultsObj['original_price']=rows[i]['original_price'];
+        resultsObj['sale_price']=rows[i]['sale_price'];
+        resultsObj['default']=rows[i]['default'];
+        resultsObj['photos']=photoStorage[rows[i]['styleid']];
+        var currentSkusArr=skusStorage[rows[i]['styleid']];
+        var skusTransformedObj={};
+        for(var i=0;i<currentSkusArr.length;i++){
+          skusTransformedObj[Object.keys(currentSkusArr[i])[0]]=currentSkusArr[i][Object.keys(currentSkusArr[i])[0]];
+        }
+        resultsObj['skus']=skusTransformedObj;
+        results.push(resultsObj);
       }
-      results.push(resultsObj);
     }
     return response;
   })
