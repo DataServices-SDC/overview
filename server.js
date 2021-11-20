@@ -1,5 +1,5 @@
 const express = require('express');
-const morgan = require("morgan");
+// const morgan = require("morgan");
 const db = require('./db/queries.js');
 const port = 3000;
 // const path = require('path');
@@ -7,29 +7,133 @@ var app = express();
 app.use(express.json());
 // app.use(morgan("dev"));
 
+//gets all products
 app.get('/products', (req, res) => {
-  return db.getProducts()
+  return db.getProducts(req)
     .then(
       console.log('successful getProducts req'))
       .then(
       results => res.status(200).send(results.rows))
-    .catch(err => console.log('error at getProducts req: ', err))
+    .catch(err => res.status(500).send(err))
 });
 
+//gets product by id
+app.get('/products/:product_id', (req, res) => {
+  return db.getProductByID(req)
+    .then(results =>{
+      var response={};
+      var features=[];
+      for(var i=0; i<results.rows.length; i++){
+        var featureObj={
+          'feature': results.rows[i].feature,
+          'value': results.rows[i].value
+        };
+        features.push(featureObj);
+      }
+       response['id'] = results.rows[0]['product_id'];
+       response['name'] = results.rows[0]['name']
+       response['slogan'] = results.rows[0]['slogan'];
+       response['description'] = results.rows[0]['description'];
+       response['category'] = results.rows[0]['category'];
+       response['default_price'] = results.rows[0]['default_price'];
+       response['features'] = features;
 
-//testing getting features
-app.get('/products/:product_id/features', (req, res) => {
-  var paramters=req.params;
-  return db.getFeaturesByID(paramters.product_id)
-    .then(
-      console.log('successful getFeaturesByID req'))
-      .then(
-      results => res.status(200).send(results.rows))
-    .catch(err => console.log('error at getFeaturesByID req: ', err))
+       return response;
+    })
+      .then(response=>{
+        res.status(200).send(response)
+      })
+    .catch(err => res.status(500).send(err))
 });
 
-// app.get('/', (req, res) => {
-//   res.send('Server up!')
+//gets all styles for given product
+app.get('/products/:product_id/styles', (req, res) => {
+  return db.getStyles(req)
+  .then(results => {
+    var rows=results.rows;
+    var response={};
+    var results=[];
+    response['product_id']=rows[0]['product_id'];
+    response['results']=results;
+
+    //photos for each styleId
+    var photoStorage={};
+    for (var i = 0; i < rows.length; i++) {
+      if (!photoStorage[rows[i]['styleid']]) {
+        photoStorage[rows[i]['styleid']] = [{'thumbnail_url': rows[i]['thumbnail_url'], 'url': rows[i]['url']}];
+      } else {
+        if (JSON.stringify([{'thumbnail_url': rows[i]['thumbnail_url'], 'url': rows[i]['url']}])
+         !==
+         JSON.stringify([{'thumbnail_url': rows[i-1]['thumbnail_url'], 'url': rows[i-1]['url']}])
+         ){
+          photoStorage[rows[i]['styleid']].push({'thumbnail_url': rows[i]['thumbnail_url'], 'url': rows[i]['url']})
+        }
+      }
+    }
+    //skus for each styleId
+    var skusStorage={};
+    for (let i = 0; i < rows.length; i++) {
+      if (!skusStorage[rows[i]['styleid']]) {
+        skusStorage[rows[i]['styleid']] = [{[rows[i]['id']] : {
+          'quantity': rows[i]['quantity'],
+          'size': rows[i]['size']
+        }}]
+      } else {
+        if (!skusStorage[rows[i]['styleid']][rows[i]['id']]) {
+          skusStorage[rows[i]['styleid']].push({[rows[i]['id']] : {
+            'quantity': rows[i]['quantity'],
+            'size': rows[i]['size']}
+          })
+        }
+      }
+    }
+
+    for (var i=0; i<rows.length; i++){
+      var resultsObj={
+        'style_id': rows[i]['style_id'],
+        'name': rows[i]['name'],
+        'original_price': rows[i]['original_price'],
+        'sale_price': rows[i]['sale_price'],
+        'default': rows[i]['default'],
+        'photos': [photoStorage[rows[i]['style_id']]],
+        'skus': skusStorage[rows[i]['style_id']]
+      }
+      results.push(resultsObj);
+    }
+    return response;
+  })
+  .then(response => res.status(200).send(response))
+  .catch(err => res.status(500).send(err))
+});
+
+//gets id's of related products for a given product
+app.get('/products/:product_id/related', (req, res) => {
+  return db.getRelated(req)
+    .then(results => {
+      var response=[];
+      for (var i=0; i<results.rows.length; i++){
+        var row = results.rows[i];
+        response.push(row['related_product_id'])
+      }
+      return response;
+      })
+    .then(response => res.status(200).send(response))
+    .catch(err => res.status(500).send(err))
+});
+
+//testing getting skus
+// app.get('/products/:product_id/skus', (req, res) => {
+//   return db.getSkus(req)
+//     // .then(results => {
+//     //   var response=[];
+//     //   for (var i=0; i<results.rows.length; i++){
+//     //     var row = results.rows[i];
+//     //     response.push(row['related_product_id'])
+//     //   }
+//     //   return response;
+//     //   })
+//     .then(response => res.status(200).send(response))
+//     .catch(err => res.status(500).send(err))
 // });
 
 app.listen(port, () => {
