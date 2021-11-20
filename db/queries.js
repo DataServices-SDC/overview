@@ -1,6 +1,4 @@
-const { Pool, Client } = require('pg');
-const $ = require( "jquery" );
-
+const {Pool} = require('pg');
 const sdc = new Pool({
   user: "johndoe",
   database: "sdc",
@@ -17,12 +15,16 @@ queries.getProducts = (req) => {
   const response = sdc.query(`select * from products limit ${limit}`);
   return response;
 };
+// Planning Time: 0.066 ms
+// Execution Time: 0.025 ms
 
 queries.getProductByID = (req) => {
   const productID=req.params.product_id;
   const response = sdc.query(`select * from products left outer join features on products.id = features.product_id where products.id = '${productID}'`);
   return response;
 };
+// Planning Time: 0.273 ms
+ //Execution Time: 210.992 ms
 
 queries.getStyles = (req) => {
   const productID=req.params.product_id;
@@ -31,21 +33,15 @@ queries.getStyles = (req) => {
   where styles.product_id='${productID}'`);
   return response;
 };
-
-//testing getting skus
-// queries.getSkus = (req) => {
-//   const productID=req.params.product_id;
-//   const response = sdc.query(`select * from skus left outer join features on products.id = features.product_id where products.id = '${productID}'`);
-//   return response;
-// };
-
-
+// Planning Time: 1.422 ms
+// Execution Time: 2395.082 ms
 
 queries.getRelated = (req) => {
   const productID=req.params.product_id;
   const response=sdc.query(`select * from related_products where related_products.current_product_id='${productID}'`);
   return response;
 };
-
+// Planning Time: 0.790 ms
+// Execution Time: 628.284 ms
 
 module.exports = queries;

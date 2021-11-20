@@ -1,19 +1,15 @@
 const express = require('express');
-// const morgan = require("morgan");
+const morgan = require("morgan");
 const db = require('./db/queries.js');
 const port = 3000;
-// const path = require('path');
 var app = express();
 app.use(express.json());
-// app.use(morgan("dev"));
+app.use(morgan("dev"));
 
 //gets all products
 app.get('/products', (req, res) => {
   return db.getProducts(req)
-    .then(
-      console.log('successful getProducts req'))
-      .then(
-      results => res.status(200).send(results.rows))
+    .then(results => res.status(200).send(results.rows))
     .catch(err => res.status(500).send(err))
 });
 
@@ -40,9 +36,7 @@ app.get('/products/:product_id', (req, res) => {
 
        return response;
     })
-      .then(response=>{
-        res.status(200).send(response)
-      })
+    .then(response => res.status(200).send(response))
     .catch(err => res.status(500).send(err))
 });
 
@@ -130,21 +124,6 @@ app.get('/products/:product_id/related', (req, res) => {
     .then(response => res.status(200).send(response))
     .catch(err => res.status(500).send(err))
 });
-
-//testing getting skus
-// app.get('/products/:product_id/skus', (req, res) => {
-//   return db.getSkus(req)
-//     // .then(results => {
-//     //   var response=[];
-//     //   for (var i=0; i<results.rows.length; i++){
-//     //     var row = results.rows[i];
-//     //     response.push(row['related_product_id'])
-//     //   }
-//     //   return response;
-//     //   })
-//     .then(response => res.status(200).send(response))
-//     .catch(err => res.status(500).send(err))
-// });
 
 app.listen(port, () => {
   console.log(`👂 listening at http://localhost:${port}`)
