@@ -1,10 +1,15 @@
 const express = require('express');
 const morgan = require("morgan");
+const NodeCache = require( "node-cache" );
+const compression = require('compression');
 const db = require('./db/queries.js');
 const port = 3000;
 var app = express();
 app.use(express.json());
 app.use(morgan("dev"));
+app.use(compression({level: 6}));
+
+const myCache = new NodeCache({stdTTL: 100});
 
 //gets all products
 app.get('/products', (req, res) => {
@@ -15,6 +20,12 @@ app.get('/products', (req, res) => {
 
 //gets product by id
 app.get('/products/:product_id', (req, res) => {
+   var {product_id}=req.params;
+   if(myCache.has(product_id)){
+     res.status(200).send(myCache.get(product_id));
+     return;
+   }
+
   return db.getProductByID(req)
     .then(results =>{
       var response={};
@@ -36,12 +47,23 @@ app.get('/products/:product_id', (req, res) => {
 
        return response;
     })
-    .then(response => res.status(200).send(response))
+
+    .then(response=>
+      myCache.set(product_id, response)
+    )
+    .then(response =>
+      res.status(200).send(response))
     .catch(err => res.status(500).send(err))
 });
 
 //gets all styles for given product
 app.get('/products/:product_id/styles', (req, res) => {
+  var { product_id } = req.params;
+  if (myCache.has(product_id + ' styles')) {
+    res.status(200).send(myCache.get(product_id + ' styles'));
+    return;
+  }
+
   return db.getStyles(req)
   .then(results => {
     var rows=results.rows;
@@ -106,12 +128,19 @@ app.get('/products/:product_id/styles', (req, res) => {
     }
     return response;
   })
+  .then(response=>myCache.set(product_id+ ' styles', response))
   .then(response => res.status(200).send(response))
   .catch(err => res.status(500).send(err))
 });
 
 //gets id's of related products for a given product
 app.get('/products/:product_id/related', (req, res) => {
+  var { product_id } = req.params;
+  if(myCache.has(product_id+' related')){
+    res.status(200).send(myCache.get(product_id+' related'));
+    return;
+  }
+
   return db.getRelated(req)
     .then(results => {
       var response=[];
@@ -121,6 +150,7 @@ app.get('/products/:product_id/related', (req, res) => {
       }
       return response;
       })
+      .then(response=> myCache.set(product_id+' related', response))
     .then(response => res.status(200).send(response))
     .catch(err => res.status(500).send(err))
 });
