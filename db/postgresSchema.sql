@@ -17,6 +17,9 @@ CREATE TABLE related_products (
   current_product_id INT,
   related_product_id INT
 );
+-- CREATE INDEX idx_related_products
+-- ON related_products(current_product_id);
+
 -- CONSTRAINT fk_related_products_products
  -- FOREIGN KEY (current_product_id) REFERENCES products(id)
 
@@ -26,24 +29,34 @@ CREATE TABLE features (
   feature VARCHAR,
   value VARCHAR
 );
+-- CREATE INDEX idx_product_features
+-- ON features(product_id);
+
 -- CONSTRAINT fk_features_products FOREIGN KEY (id) REFERENCES products(id)
 
 CREATE TABLE styles (
   id INT PRIMARY KEY,
   product_id INT,
   name VARCHAR,
-  sale_price TEXT,
+  sale_price VARCHAR,
+  -- changed sale_price text to varchar, need to reload and copy data
   original_price INT,
   default_style INT
 );
+-- CREATE INDEX idx_product_styles
+-- ON styles(product_id);
+
   -- CONSTRAINT fk_styles_products FOREIGN KEY (id) REFERENCES products(id)
 
 CREATE TABLE photos (
   id INT PRIMARY KEY,
   styleId INT,
-   url VARCHAR,
+  url VARCHAR,
   thumbnail_url VARCHAR
 );
+-- CREATE INDEX idx_photo_style
+-- ON photos(styleId);
+
   -- CONSTRAINT fk_photos_styles FOREIGN KEY (id) REFERENCES styles(id)
 
 CREATE TABLE skus (
@@ -52,6 +65,9 @@ CREATE TABLE skus (
   size VARCHAR,
   quantity INT
 );
+CREATE INDEX idx_sku_style
+ON skus(styleId);
+
 -- CONSTRAINT fk_skus_styles FOREIGN KEY (id) REFERENCES styles(id)
 
 -- copy statements--

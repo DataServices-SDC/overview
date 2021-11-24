@@ -24,7 +24,11 @@ queries.getProductByID = (req) => {
   return response;
 };
 // Planning Time: 0.273 ms
- //Execution Time: 210.992 ms
+//Execution Time: 210.992 ms
+
+//after adding index:
+//Planning Time: 0.619 ms
+//Execution Time: 1.252 ms
 
 queries.getStyles = (req) => {
   const productID=req.params.product_id;
@@ -33,8 +37,12 @@ queries.getStyles = (req) => {
   where styles.product_id='${productID}'`);
   return response;
 };
-// Planning Time: 1.422 ms
-// Execution Time: 2395.082 ms
+//Planning Time: 1.422 ms
+//Execution Time: 2395.082 ms
+
+//after adding index:
+//Planning Time: 5.127 ms
+//Execution Time: 1.948 ms
 
 queries.getRelated = (req) => {
   const productID=req.params.product_id;
@@ -43,5 +51,9 @@ queries.getRelated = (req) => {
 };
 // Planning Time: 0.790 ms
 // Execution Time: 628.284 ms
+
+//after adding index:
+// Planning Time: 2.279 ms
+// Execution Time: 0.632 ms
 
 module.exports = queries;
