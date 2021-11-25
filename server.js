@@ -7,7 +7,7 @@ const port = 3000;
 var app = express();
 app.use(express.json());
 app.use(morgan("dev"));
-app.use(compression({level: 6}));
+// app.use(compression({level: 6}));
 
 const myCache = new NodeCache({stdTTL: 100});
 
@@ -45,12 +45,9 @@ app.get('/products/:product_id', (req, res) => {
        response['default_price'] = results.rows[0]['default_price'];
        response['features'] = features;
 
+       myCache.set(product_id, response)
        return response;
     })
-
-    .then(response=>
-      myCache.set(product_id, response)
-    )
     .then(response =>
       res.status(200).send(response))
     .catch(err => res.status(500).send(err))
@@ -126,9 +123,9 @@ app.get('/products/:product_id/styles', (req, res) => {
         results.push(resultsObj);
       }
     }
+    myCache.set(product_id+ ' styles', response);
     return response;
   })
-  .then(response=>myCache.set(product_id+ ' styles', response))
   .then(response => res.status(200).send(response))
   .catch(err => res.status(500).send(err))
 });
@@ -148,9 +145,9 @@ app.get('/products/:product_id/related', (req, res) => {
         var row = results.rows[i];
         response.push(row['related_product_id'])
       }
+      myCache.set(product_id+' related', response)
       return response;
       })
-      .then(response=> myCache.set(product_id+' related', response))
     .then(response => res.status(200).send(response))
     .catch(err => res.status(500).send(err))
 });

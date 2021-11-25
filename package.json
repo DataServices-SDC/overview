@@ -28,5 +28,8 @@
     "node-cache": "^5.1.2",
     "nodemon": "^2.0.15",
     "pg": "^8.7.1"
+  },
+  "devDependencies": {
+    "artillery": "^2.0.0-5"
   }
 }
