@@ -11,6 +11,11 @@ app.use(morgan("dev"));
 
 const myCache = new NodeCache({stdTTL: 100});
 
+app.get('/test', (req, res)=>{
+  console.log('initial get req');
+  res.send('Hi!');
+});
+
 //gets all products
 app.get('/products', (req, res) => {
   return db.getProducts(req)
@@ -151,6 +156,8 @@ app.get('/products/:product_id/related', (req, res) => {
     .then(response => res.status(200).send(response))
     .catch(err => res.status(500).send(err))
 });
+
+
 
 app.listen(port, () => {
   console.log(`👂 listening at http://localhost:${port}`)
