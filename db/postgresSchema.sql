@@ -65,8 +65,8 @@ CREATE TABLE skus (
   size VARCHAR,
   quantity INT
 );
-CREATE INDEX idx_sku_style
-ON skus(styleId);
+-- CREATE INDEX idx_sku_style
+-- ON skus(styleId);
 
 -- CONSTRAINT fk_skus_styles FOREIGN KEY (id) REFERENCES styles(id)
 
