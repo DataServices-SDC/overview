@@ -13,7 +13,25 @@ Scalable ecommerce backend with optimizations to handle increased web traffic.
 
 ### 🧪 Technologies
 
-<p align="left"> <a href="https://aws.amazon.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="aws" width="40" height="40"/> </a> <a href="https://expressjs.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original-wordmark.svg" alt="express" width="40" height="40"/> </a> <a href="https://nodejs.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original-wordmark.svg" alt="nodejs" width="40" height="40"/> </a>  </p>
+```
+$ git clone https://github.com/DataServices-SDC/product.git 
+$ cd product 
+$ npm install 
+$ npm start (starts server with nodemon) 
+$ Configure postgresql pool in db/queries.js
+```
+* Axios : Version 0.21.1,
+* Compression : 1.7.4,
+* CSS-loader : 6.2.0,
+* Express : Version 4.17.1,
+* Jest : 27.0.6,
+* Moment : 2.29.1,
+* Nodemon: Version 2.0.12,
+* React : Version 17.0.2,
+* React-dom : Version 17.0.2,
+* React-lazyload : Version 3.2.0,
+* React-router-dom : Version 5.2.0
+* Styled-components : 5.3.0
 
 ### 🚀 Installation and Setup
 
