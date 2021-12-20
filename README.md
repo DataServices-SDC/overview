@@ -1,5 +1,5 @@
 General Info
-Server and database to handle FEC api calls for Product widget
+Scalable ecommerce backend with optimizations to handle increased web traffic.
 
 🧪 Technologies
 Express
