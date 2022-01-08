@@ -33,7 +33,7 @@ $ npm start (starts server with nodemon)
 $ Configure postgresql pool in db/queries.js
 ```
 
-### 🤝 Contributors
+### 🤝 Contributor
 
 - [Jason Adams](https://www.linkedin.com/in/jason-adams-b88086146/)
 
