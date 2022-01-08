@@ -7,7 +7,8 @@ const port = 3000;
 var app = express();
 app.use(express.json());
 app.use(morgan("dev"));
-// app.use(compression({level: 6}));
+app.use(compression({level: 6}));
+app.use(express.static('public'));
 
 const myCache = new NodeCache({stdTTL: 100});
 
