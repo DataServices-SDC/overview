@@ -13,9 +13,15 @@ Scalable ecommerce backend with optimizations to handle increased web traffic.
 
 ### 🧪 Technologies
 
-* Express
 * Node
+* Express
 * PostgreSQL
+* AWS EC2
+* NGINX
+* Loader.io
+* Axios
+* Nodemon
+* Postman
 
 ### 🚀 Installation and Setup
 
