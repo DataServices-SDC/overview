@@ -1,5 +1,7 @@
 productData/
 sdc.pem
+dbKey.pem
+token.js
 package-lock.json
 
 # Logs
