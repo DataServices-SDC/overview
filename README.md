@@ -11,6 +11,15 @@
 
 Scalable ecommerce backend with optimizations to handle increased web traffic.
 
+Designed a Node-express server and PostgreSQL database to handle requests from a retail website and provide responses with specifically formatted JSON text.
+Server and database were uploaded into Amazon EC2 t2-micro instances:
+1 instance running NGINX for load balancing
+4 instances running identical images of the node server
+1 instance containing the PostgreSQL database
+Stress testing conducted using Loader.io for server performance.
+Each query contained a product chosen at random from > one million possibilities
+Requests were sent at 1000rps intervals
+
 ### 🧪 Technologies
 
 * Node
@@ -22,16 +31,6 @@ Scalable ecommerce backend with optimizations to handle increased web traffic.
 * Axios
 * Nodemon
 * Postman
-
-### 🚀 Installation and Setup
-
-```
-$ git clone https://github.com/DataServices-SDC/product.git 
-$ cd product 
-$ npm install 
-$ npm start (starts server with nodemon) 
-$ Configure postgresql pool in db/queries.js
-```
 
 ### 🤝 Contributor
 
