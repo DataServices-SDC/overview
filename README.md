@@ -20,6 +20,10 @@ Stress testing conducted using Loader.io for server performance.
 Each query contained a product chosen at random from > one million possibilities
 Requests were sent at 1000rps intervals
 
+Optimized with load balancing, bringing response times down from 800ms to 11ms while handling over 1,000 clients per second with no timeouts and < 0.1% error rate
+Optimized database query response times from 2400ms to 7ms by implementing database indexes
+
+
 ### 🧪 Technologies
 
 * Node
