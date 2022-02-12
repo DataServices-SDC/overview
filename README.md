@@ -9,7 +9,7 @@
 
 ### General Info
 
-Scalable ecommerce backend with optimizations to handle increased web traffic.
+Scalable e-commerce backend with optimizations to handle increased web traffic
 
 * Optimized with load balancing, bringing response times down from 800ms to 11ms while handling over 1,000 clients per second with no timeouts and < 0.1% error rate
 * Optimized database query response times from 2400ms to 7ms by implementing database indexes
