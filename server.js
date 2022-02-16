@@ -12,19 +12,12 @@ app.use(express.static('public'));
 
 const myCache = new NodeCache({stdTTL: 100});
 
-app.get('/test', (req, res)=>{
-  console.log('initial get req');
-  res.send('Hi!');
-});
-
-//gets all products
 app.get('/products', (req, res) => {
   return db.getProducts(req)
     .then(results => res.status(200).send(results.rows))
     .catch(err => res.status(500).send(err))
 });
 
-//gets product by id
 app.get('/products/:product_id', (req, res) => {
    var {product_id}=req.params;
    if(myCache.has(product_id)){
@@ -59,7 +52,6 @@ app.get('/products/:product_id', (req, res) => {
     .catch(err => res.status(500).send(err))
 });
 
-//gets all styles for given product
 app.get('/products/:product_id/styles', (req, res) => {
   var { product_id } = req.params;
   if (myCache.has(product_id + ' styles')) {
@@ -75,7 +67,6 @@ app.get('/products/:product_id/styles', (req, res) => {
     response['product_id']=rows[0]['product_id'];
     response['results']=results;
 
-    //photos for each styleId
     var photoStorage={};
     for (var i = 0; i < rows.length; i++) {
       if (!photoStorage[rows[i]['styleid']]) {
@@ -89,7 +80,7 @@ app.get('/products/:product_id/styles', (req, res) => {
         }
       }
     }
-    //skus for each styleId
+
     var skusStorage={};
     for (let i = 0; i < rows.length; i++) {
       if (!skusStorage[rows[i]['styleid']]) {
@@ -136,7 +127,6 @@ app.get('/products/:product_id/styles', (req, res) => {
   .catch(err => res.status(500).send(err))
 });
 
-//gets id's of related products for a given product
 app.get('/products/:product_id/related', (req, res) => {
   var { product_id } = req.params;
   if(myCache.has(product_id+' related')){
