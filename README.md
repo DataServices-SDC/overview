@@ -15,9 +15,10 @@ Scalable e-commerce backend with optimizations to handle increased web traffic
 * Optimized database query response times from 2400ms to 7ms by implementing database indexes
 * Implemented a caching system that increased the speed of repeat requests and reduced calls to the database
 
-* Server and database were uploaded into Amazon EC2 instances:
+### System Design
+Server and database were uploaded into Amazon EC2 instances:
 * 1 instance running NGINX for load balancing
-* 4 instances running identical images of the node server
+* 4 instances running identical images of the Node server
 * 1 instance containing the PostgreSQL database
 * Stress testing conducted using Loader.io for server performance.
 * Each query contained a product chosen at random from > one million possibilities
