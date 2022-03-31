@@ -11,10 +11,11 @@
 
 Scalable e-commerce backend with optimizations to handle increased web traffic
 
-* Optimized with load balancing, bringing response times down from 800ms to 11ms while handling over 1,000 clients per second with no timeouts and < 0.1% error rate
+* Optimized server response times by horizontally scaling application across several AWS EC2 instances with NGINX load balancing, bringing response times down from 800ms to 11ms while handling over 1,000 clients per second with no timeouts and < 0.1% error rate
 * Optimized database query response times from 2400ms to 7ms by implementing database indexes
-* Designed a Node-express server and PostgreSQL database to handle requests from a retail website and provide responses with specifically formatted JSON text.
-* Server and database were uploaded into Amazon EC2 t2-micro instances:
+* Implemented a caching system that increased the speed of repeat requests and reduced calls to the database
+
+* Server and database were uploaded into Amazon EC2 instances:
 * 1 instance running NGINX for load balancing
 * 4 instances running identical images of the node server
 * 1 instance containing the PostgreSQL database
